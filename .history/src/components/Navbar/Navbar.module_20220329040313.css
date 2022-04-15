@@ -1,0 +1,86 @@
+:root {
+  --navbarBackgroundColor: #ffffff;
+  --navSelectedCategoryColor: #5ece7b;
+  --navNotSelectedCategoryColor: #1d1f22;
+}
+
+body {
+  margin: 0;
+}
+.navContainer {
+  width: 100vw;
+  height: 80px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  background-color: var(--navbarBackgroundColor);
+}
+
+.navCategories {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 0px;
+  position: absolute;
+  width: 234px;
+  height: 56px;
+  left: 101px;
+  bottom: 0px;
+}
+
+.navItem {
+  position: static;
+  color: var(--navNotSelectedCategoryColor);
+  height: 20px;
+  left: 0%;
+  right: 0%;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 120%;
+  text-transform: uppercase;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  margin-right: 20px;
+  margin-left: 30px;
+  margin-bottom: 30px;
+}
+
+.active {
+  color: var(--navSelectedCategoryColor);
+  font-weight: 600;
+  border-bottom: 2px solid var(--navSelectedCategoryColor);
+  padding: 0px 10px 30px 10px;
+}
+
+.logoContainer {
+  position: absolute;
+  width: 41px;
+  height: 41px;
+  left: calc((100vw / 2) - 101px);
+  top: calc(50% - 41px / 2 + 4.5px);
+}
+
+.cartContainer {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  right: 101px;
+  top: 38px;
+  margin: 0px 22px;
+}
+
+.wheelsContainer {
+  position: absolute;
+  top: 5px;
+  left: 6px;
+}
+
+.currencyContainer {
+  position: absolute;
+  width: 38px;
+  height: 29px;
+  left: 124px;
+  top: 5.5px;
+}

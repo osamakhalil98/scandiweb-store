@@ -1,0 +1,26 @@
+:root {
+  --primaryBackgroundColor: #ffffff;
+}
+
+.modalContainer {
+  background-color: var(--primaryBackgroundColor);
+  position: absolute;
+
+  height: auto;
+  box-shadow: rgba(17, 17, 26, 0.05) 0px 4px 16px,
+    rgba(17, 17, 26, 0.05) 0px 8px 32px;
+
+  z-index: 111;
+
+  width: 325px;
+  left: -260px;
+}
+
+.modalClose {
+  display: none;
+}
+
+.modalSubContainer {
+  margin-left: 20%;
+  margin-right: 20%;
+}

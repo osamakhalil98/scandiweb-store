@@ -1,0 +1,25 @@
+.ProductsContainer {
+  margin-top: calc(14% - 80px / 2);
+  margin-left: calc(11% - 80px / 2);
+}
+
+.categoryName {
+  font-family: "Raleway";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 160%;
+  margin-bottom: 20px;
+}
+
+.gridContainer {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: 386px 386px 386px;
+  column-gap: 40px;
+}
+
+.cardContainer {
+  width: 386px;
+  height: 444px;
+}

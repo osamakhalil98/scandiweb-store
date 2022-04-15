@@ -1,0 +1,12 @@
+:root {
+  --navbarBackgroundColor: #ffffff;
+}
+
+.navContainer {
+  width: 100vw;
+  height: 80px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  background-color: var(--navbarBackgroundColor);
+}

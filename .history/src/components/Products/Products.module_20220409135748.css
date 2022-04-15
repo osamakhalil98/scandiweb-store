@@ -1,0 +1,12 @@
+.ProductsContainer {
+  margin-top: calc(15% - 80px / 2);
+  margin-left: calc(11% - 80px / 2);
+}
+
+.categoryName {
+  font-family: "Raleway";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 160%;
+}
