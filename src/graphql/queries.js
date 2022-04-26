@@ -12,13 +12,14 @@ export const GET_CURRENCIES = gql`
   query {
     currencies {
       symbol
+      label
     }
   }
 `;
 
-export const GET_ALL_PRODUCTS = `
-  query {
-    category(input: { title: "all" }) {
+export const GET_PRODUCTS = `
+  query getCategoryProducts($title:String!){
+    category(input: { title: $title }) {
       name
       products {
         name
@@ -48,64 +49,6 @@ export const GET_ALL_PRODUCTS = `
       }
     }
   }
-`;
-
-export const GET_CLOTHES_PRODUCTS = `
-query {
-  category(input: { title: "clothes" }) {
-    name
-    products {
-      name
-      id
-      brand
-      attributes {
-        id
-        name
-        type
-      }
-      category
-      gallery
-      inStock
-      description
-      prices {
-        amount
-        currency {
-          label
-          symbol
-        }
-      }
-    }
-  }
-}
-`;
-
-export const GET_TECH_PRODUCTS = `
-query {
-  category(input: { title: "tech" }) {
-    name
-    products {
-      name
-      id
-      brand
-      attributes {
-        id
-        name
-        type
-      }
-      category
-      gallery
-      inStock
-      description
-      prices {
-        amount
-        currency {
-          label
-          symbol
-        }
-      }
-    }
-  }
-}
 `;
 
 export const GET_PRODUCT = `

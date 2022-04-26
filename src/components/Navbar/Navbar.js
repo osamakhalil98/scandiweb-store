@@ -1,6 +1,6 @@
 import React, { Component, createRef } from "react";
 import styles from "./Navbar.module.scss";
-import { GET_CATEGORIES, GET_CURRENCIES } from "../../graphql/queries";
+import { GET_CATEGORIES } from "../../graphql/queries";
 import OutsideClicker from "../../utility/OutsideClicker";
 import { Query } from "react-apollo";
 import logo from "../../assets/logoIcon.png";
@@ -27,20 +27,6 @@ class Navbar extends Component {
     });
   };
 
-  overlayStyles = {
-    position: "absolute",
-    top: 80,
-    left: 0,
-    bottom: 0,
-    right: 0,
-    zIndex: 100,
-    background: "#34343345",
-    cursor: "pointer",
-    width: "100%",
-    height: "88rem",
-    margin: 0,
-    padding: 0,
-  };
   state = {
     currentCategoryName: "all",
     Currency: "$",
@@ -55,7 +41,7 @@ class Navbar extends Component {
   };
 
   defaultCurrency = (cName) => {
-    if (cName.symbol == this.state.Currency) {
+    if (cName.symbol === this.state.Currency) {
       return (
         <p key={cName.symbol} className={styles.optionCurrency}>
           {cName.symbol}{" "}
@@ -130,7 +116,9 @@ class Navbar extends Component {
       <>
         <nav className={styles.navContainer}>
           <div
-            style={this.state.cartModalSelectOpen ? this.overlayStyles : {}}
+            className={
+              this.state.cartModalSelectOpen ? styles.overlaystyles : ""
+            }
           ></div>
           <div className={styles.navCategories}>
             <Query query={GET_CATEGORIES}>
@@ -139,17 +127,16 @@ class Navbar extends Component {
                   return (
                     <>
                       {data.categories.map((category, idx) => (
-                        <Link to={"/"} style={{ textDecoration: "none" }}>
+                        <Link to={"/"} className={styles.td}>
                           <p
                             key={idx}
-                            style={{ cursor: "pointer" }}
                             ref={(ref) => (this.accordingItems[idx] = ref)}
                             onClick={() => this.handleNav(idx)}
                             className={`${
                               styles.navItem
                             } ${this.defaultActiveCategoryColor(
                               category.name
-                            )}`}
+                            )} ${styles.cursor}`}
                             data-listitem={idx}
                           >
                             {category.name}
@@ -165,18 +152,25 @@ class Navbar extends Component {
             </Query>
 
             <div className={styles.logoContainer}>
-              <img src={logo} />
+              <img src={logo} alt="store logo" />
             </div>
           </div>
 
           <OutsideClicker clicked={this.handleClickOutside}>
             <div className={styles.currencyContainer}>
-              <p className={styles.optionCurrency}>
+              <p
+                className={styles.optionCurrency}
+                onClick={() => this.handleSelect()}
+              >
                 {this.props.currentCurrencyState.currentCurrency}
               </p>
               {this.arrowShape()}
             </div>
-            {this.state.currencySelectOpen ? <Modal /> : ""}
+            {this.state.currencySelectOpen ? (
+              <Modal closed={() => this.handleSelect()} />
+            ) : (
+              ""
+            )}
 
             <div
               className={`${styles.cartContainer}`}
@@ -184,23 +178,27 @@ class Navbar extends Component {
             >
               <div
                 className={`${styles.itemsCartSum} ${
-                  this.props.currentCartItemsState.cartItems.length == 0
+                  this.props.currentCartItemsState.cartItems.length === 0
                     ? styles.hidden
                     : ""
                 } `}
                 ref={this.cartRef}
               >
-                {this.props.currentCartItemsState.cartItems.length == 0
+                {this.props.currentCartItemsState.itemslength === 0
                   ? ""
-                  : this.props.currentCartItemsState.cartItems.length}
+                  : this.props.currentCartItemsState.itemslength}
               </div>
-              <img src={cart} />
+              <img src={cart} alt="cart body" />
               <div className={styles.wheelsContainer}>
-                <img src={wheel} style={{ marginRight: "3px" }} />
-                <img src={wheel} />
+                <img src={wheel} className={styles.mr} alt="cart wheel 1" />
+                <img src={wheel} alt="cart wheel 2" />
               </div>
             </div>
-            {this.state.cartModalSelectOpen === true ? <CartModal /> : ""}
+            {this.state.cartModalSelectOpen === true ? (
+              <CartModal closeModal={() => this.handleCartClick()} />
+            ) : (
+              ""
+            )}
           </OutsideClicker>
         </nav>
       </>

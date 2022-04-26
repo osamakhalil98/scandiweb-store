@@ -3,9 +3,12 @@ import styles from "./ProductsDetails.module.scss";
 import { GET_PRODUCT } from "../../graphql/queries";
 import { connect } from "react-redux";
 import setCartItemsAction from "../../redux/actions/setCartItemsAction";
-import { toast, Toaster } from "react-hot-toast";
 
 class ProductsDetails extends Component {
+  constructor(props) {
+    super(props);
+    this.handleAttrClick = this.handleAttrClick.bind(this);
+  }
   state = {
     productData: [],
     selectedAttributes: {},
@@ -52,15 +55,13 @@ class ProductsDetails extends Component {
   };
 
   handleCurrency = (pPrices) => {
-    pPrices?.map((pPrice) => {
+    pPrices?.forEach((pPrice) => {
       if (
         pPrice?.currency?.symbol ===
         this.props.currentCurrencyState.currentCurrency
       ) {
         this.AMOUNT = `${pPrice?.currency?.symbol} ${pPrice.amount}`;
         return this.AMOUNT;
-      } else {
-        return;
       }
     });
   };
@@ -68,8 +69,6 @@ class ProductsDetails extends Component {
   componentDidMount() {
     const prodcutid = this.props.match.params.productid;
     this.getProduct(prodcutid);
-
-    console.log(this.state.selectedAttributes);
   }
 
   handleAttrClick = (key, value) => {
@@ -79,8 +78,10 @@ class ProductsDetails extends Component {
       selectedAttributes: newAttrSelected,
     });
   };
-  addItem = (e) => {
+
+  addItem = () => {
     const { product } = this.state.productData;
+    let setAttrs = this.state.selectedAttributes;
     const { gallery, name, brand, prices, attributes, id } = product;
     const cartItem = {
       productImage: gallery[0],
@@ -89,54 +90,54 @@ class ProductsDetails extends Component {
       productPrice: prices,
       gallery: gallery,
       prodAttrs: attributes,
-      selectedAttr: this.state.selectedAttributes,
+      selectedAttr: attributes === [] ? {} : { ...setAttrs },
+      length: 1,
       count: 1,
       productId: id,
     };
-    this.props.setCartItemsAction(cartItem);
-    toast("Item added to cart!", {
-      icon: "✔",
-    });
+    this.props.setCartItemsAction({ ...cartItem });
+    alert("Item added to cart!");
   };
-  render() {
-    console.log(this.clickedItems);
 
+  render() {
     const { product } = this.state.productData;
     let description = product?.description;
     description = description?.replace(/['"]+/g, "");
 
     return (
       <div className={styles.productsDetailsConatiner}>
-        <Toaster />
         <div className={styles.productDetailSubContainer}>
           <div className={styles.galleryConatiner}>
             {product?.gallery?.map((prod, idx) => {
               if (idx === 0) {
                 this.bigImage = prod;
               }
+
               return (
                 <img
                   src={`${prod}`}
-                  width={79}
-                  height={80}
-                  key={idx}
-                  style={{
-                    objectFit: "contain",
-                    marginBottom: "10px",
-                    cursor: "pointer",
-                  }}
+                  alt="product details"
+                  className={styles.imgStyles}
                   onClick={() => this.handleGallerySelect(prod)}
                 />
               );
             })}
           </div>
-          <div>
+          <div className={styles.imgContainer}>
+            {product?.inStock ? (
+              ""
+            ) : (
+              <h2 className={styles.outStocktitle}>OUT OF STOCK!</h2>
+            )}
             <img
               src={this.state.mainImage ? this.state.mainImage : this.bigImage}
               alt="gallery"
               width={580}
+              className={`${product?.inStock ? "" : styles.outStock} ${
+                styles.bigImage
+              }`}
               height={480}
-              style={{ objectFit: "contain" }}
+              //style={{ objectFit: "contain" }}
             />
           </div>
 
@@ -150,25 +151,18 @@ class ProductsDetails extends Component {
                   return (
                     <>
                       <h3 className={styles.attrName}>{product?.name}:</h3>
-                      <div style={{ display: "flex" }}>
+                      <div className={styles.flex}>
                         {product?.items?.map((color, idx) => (
                           <p
                             style={{
                               backgroundColor: color.value,
-                              width: 50,
-                              height: 45,
-                              marginInlineEnd: 10,
-                              border: "1px solid black",
-                              cursor: "pointer",
-                              textAlign: "center",
                             }}
-                            className={
-                              this.state.selectedAttributes[product?.name] ==
+                            className={`${
+                              this.state.selectedAttributes[product?.name] ===
                               color.value
-                                ? styles.lowOpacity
-                                : styles.highOpacity
-                            }
-                            key={idx}
+                                ? styles.selectedColor
+                                : ""
+                            } ${styles.attrStyles}`}
                             data-item={idx}
                             ref={(ref) => this.clickedItems.push(ref)}
                             onClick={() =>
@@ -183,48 +177,22 @@ class ProductsDetails extends Component {
                   return (
                     <>
                       <h3 className={styles.attrName}>{product?.name}:</h3>
-                      <div
-                        style={{
-                          display: "flex",
-                          marginBottom: "10px",
-                        }}
-                      >
+                      <div className={styles.selectedAttrcontainer}>
                         {product?.items?.map((value, idx) => (
                           <button
-                            style={{
-                              width: 50,
-                              height: 45,
-                              marginInlineEnd: 10,
-                              border: "1px solid black",
-                              cursor: "pointer",
-                              textAlign: "center",
-                              marginTop: "8px",
-                            }}
-                            className={
-                              this.state.selectedAttributes[product?.name] ==
+                            className={`${
+                              this.state.selectedAttributes[product?.name] ===
                               value.value
                                 ? styles.selectedAttr
                                 : styles.notSelectedAttr
-                            }
-                            key={idx}
+                            } ${styles.attr}`}
                             data-item={idx}
                             ref={(ref) => this.clickedItems.push(ref)}
                             onClick={() =>
                               this.handleAttrClick(product?.name, value.value)
                             }
                           >
-                            <p
-                              style={{
-                                textAlign: "center",
-                                fontSize: "16px",
-                                fontWeight: "400",
-                                marginTop: "10px",
-                                fontFamily: "Source Sans Pro",
-                              }}
-                              className={styles.attrValue}
-                            >
-                              {value.value}
-                            </p>
+                            <p className={styles.attrValue}>{value.value}</p>
                           </button>
                         ))}
                       </div>
@@ -234,17 +202,17 @@ class ProductsDetails extends Component {
               })}
             </div>
             <div>
-              <h2 style={{ marginBottom: "8px" }}>PRICE:</h2>
+              <h2 className={styles.mb}>PRICE:</h2>
               <p className={styles.productPrice}>
                 {this.props.currentCurrencyState.currentCurrency}{" "}
-                {product?.prices?.map((price) => {
-                  if (
-                    price?.currency?.symbol ==
-                    this.props.currentCurrencyState.currentCurrency
-                  ) {
-                    return <span>{price?.amount}</span>;
-                  }
-                })}
+                {product?.prices?.map((price) =>
+                  price?.currency?.symbol ===
+                  this.props.currentCurrencyState.currentCurrency ? (
+                    <span>{price?.amount}</span>
+                  ) : (
+                    ""
+                  )
+                )}
               </p>
             </div>
             <div>
@@ -261,7 +229,7 @@ class ProductsDetails extends Component {
             <div>
               <p
                 dangerouslySetInnerHTML={{ __html: description }}
-                style={{ width: "300px" }}
+                className={styles.w300}
               ></p>
             </div>
           </div>

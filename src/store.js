@@ -5,7 +5,7 @@ function configureStore(
   state = {
     currentCurrencyState: { currentCurrency: "$" },
     currentCategoryState: { currentCategory: "all" },
-    currentCartItemsState: { cartItems: [] },
+    currentCartItemsState: { cartItems: [], itemslength: 0 },
   }
 ) {
   return createStore(rootReducer, state);

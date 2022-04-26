@@ -1,5 +1,6 @@
 :root {
   --primaryBackgroundColor: #ffffff;
+  --primaryButtonColor: #5ece7b;
 }
 
 .modalContainer {
@@ -25,6 +26,8 @@
   margin-left: 5%;
   margin-right: 5%;
   margin-top: 10px;
+  max-height: 400px;
+  overflow-y: auto;
 }
 
 .itemContainer {
@@ -32,6 +35,7 @@
   justify-content: space-between;
   align-content: center;
   margin-top: 15px;
+  margin-bottom: 40px;
 }
 
 .itemInfo {
@@ -39,7 +43,12 @@
   flex-direction: column;
   justify-content: start;
 }
-
+.infoCtrl {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-content: flex-start;
+}
 .bagViewBtn {
   background-color: #ffffff;
   width: 140px;
@@ -82,4 +91,144 @@
   .attrValue {
     color: #ffffff;
   }
+}
+
+.AttrColor {
+  width: 16px;
+  height: 16px;
+  margin-top: 4px;
+  margin-inline-end: 8px;
+  padding-top: 5px;
+  text-align: center;
+  font-size: 11px;
+  color: #ffffff;
+}
+.selectedAttrColor {
+  width: 16px;
+  height: 16px;
+  margin-top: 4px;
+  margin-inline-end: 8px;
+  border: 1px solid white;
+  outline: 1px solid #5ece7b;
+  padding-top: 5px;
+  text-align: center;
+  font-size: 11px;
+  color: #ffffff;
+}
+
+.AttrText {
+  width: 32px;
+  height: 26px;
+  margin-top: 4px;
+  margin-inline-end: 5px;
+  padding-top: 5px;
+  border: 1px solid #a6a6a6;
+  box-sizing: border-box;
+  text-align: center;
+  font-size: 10px;
+  color: #a6a6a6;
+  background: rgba(166, 166, 166, 0.2);
+}
+.selectedAttrText {
+  width: 32px;
+  height: 26px;
+  margin-top: 4px;
+  margin-inline-end: 5px;
+  border: 1px solid black;
+  padding-top: 5px;
+  text-align: center;
+  font-size: 10px;
+  color: #ffffff;
+  background-color: #1d1f22;
+}
+.attrItemsContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  flex-wrap: nowrap;
+  margin-left: 2px;
+}
+
+.titleBag {
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.titleBag2 {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.w {
+  width: 120px;
+}
+.m {
+  margin-top: 0px;
+}
+
+.itemPrice {
+  margin-top: 0px;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 0px;
+}
+.prodAttrContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.attrName {
+  margin-bottom: 0px;
+  font-size: 14px;
+}
+.increaseCtrl {
+  font-size: 20px;
+  font-weight: 500;
+  border: 1px solid #1d1f22;
+  background-color: white;
+  text-align: center;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  margin-top: 0px;
+}
+
+.itemCount {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  font-size: 18px;
+  text-align: center;
+}
+.itemDecrease {
+  font-size: 20px;
+  font-weight: 500;
+  border: 1px solid #1d1f22;
+  background-color: white;
+  text-align: center;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+}
+.p {
+  position: relative;
+}
+.cursor {
+  cursor: pointer;
+}
+
+.totalContainer {
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+.productImage {
+  width: 100%;
+  height: 100%;
+  object-fit: scale-down;
+  max-width: 100px;
 }

@@ -41,13 +41,14 @@
 }
 .num {
   font-family: "Raleway";
+  text-align: center;
   font-style: normal;
   font-weight: 500;
 }
 .line {
   height: 1px;
   background-color: #e5e5e5;
-  margin-right: calc(20% - 50px / 2);
+  margin-right: calc(16% - 50px / 2);
   margin-top: 30px;
 }
 .pName {
@@ -67,23 +68,250 @@
 }
 
 .leftArrow {
-  position: absolute;
-  top: 80px;
-  left: 8px;
+  padding-top: 5px;
 }
 
 .rightArrow {
-  position: absolute;
-  top: 80px;
-  right: 8px;
+  padding-top: 5px;
 }
 
 .attrValue {
   color: #ffffff;
 }
-.selectedAttr {
+
+.AttrColor {
+  width: 32px;
+  height: 32px;
+  margin-top: 4px;
+  margin-inline-end: 10px;
+  padding-top: 5px;
+  text-align: center;
+  font-size: 11px;
+  color: #ffffff;
+}
+.selectedAttrColor {
+  width: 32px;
+  height: 32px;
+  margin-top: 4px;
+  margin-inline-end: 10px;
+  border: 1px solid white;
+  outline: 1px solid #5ece7b;
+  padding-top: 5px;
+  text-align: center;
+  font-size: 11px;
+  color: #ffffff;
+}
+
+.AttrText {
+  width: 63px;
+  height: 45px;
+  margin-top: 4px;
+  margin-inline-end: 10px;
+  padding-top: 10px;
+  border: 1px solid #1d1f22;
+  box-sizing: border-box;
+  text-align: center;
+  font-size: 10px;
+  color: #1d1f22;
+  background: #ffffff;
+  font-family: "Source Sans Pro";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  text-align: center;
+}
+.selectedAttrText {
+  font-family: "Source Sans Pro";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  width: 63px;
+  height: 45px;
+  margin-top: 4px;
+  margin-inline-end: 10px;
+  border: 1px solid black;
+  padding-top: 10px;
+  text-align: center;
+  color: #ffffff;
   background-color: #1d1f22;
-  .attrValue {
-    color: #ffffff;
-  }
+}
+.attrItemsContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-left: 2px;
+}
+
+.attrLabel {
+  margin-bottom: 0px;
+  margin-top: 0px;
+  font-family: "Roboto Condensed";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 18px;
+  text-transform: uppercase;
+}
+
+.itemCtrl {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #1d1f22;
+}
+
+.arrowContainerLeft {
+  width: 24px;
+  height: 24px;
+  background: rgba(0, 0, 0, 0.73);
+  transform: matrix(-1, 0, 0, 1, 0, 0);
+  position: absolute;
+  top: 270px;
+  right: 70px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.arrowContainerRight {
+  width: 24px;
+  height: 24px;
+  background: rgba(0, 0, 0, 0.73);
+  transform: matrix(-1, 0, 0, 1, 0, 0);
+  position: absolute;
+  top: 270px;
+  right: 100px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.itemInfoContainer {
+  width: 600px;
+  margin-bottom: 30px;
+}
+.cartName {
+  margin-bottom: 40px;
+}
+
+.productName {
+  margin-top: 3px;
+  margin-bottom: 12px;
+}
+
+.attrContainer {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0;
+}
+
+.checkoutContainer {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+}
+
+.propContainer {
+  display: flex;
+  justify-content: start;
+  margin-bottom: 20px;
+}
+.propName {
+  font-family: "Raleway";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;
+  margin-inline-end: 10px;
+}
+
+.propValue {
+  font-family: "Raleway";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+}
+.cartButton {
+  width: 292px;
+  height: 52px;
+  background-color: var(--primaryButtonColor);
+  color: white;
+  cursor: pointer;
+  border-style: none;
+  font-family: "Raleway";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.attrCartContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.infoCtrlContainer {
+  margin-left: 8px;
+  margin-right: 8px;
+  margin-top: 0px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-content: center;
+}
+
+.increaseCtrl {
+  font-size: 20px;
+  font-weight: 500;
+  border: 1px solid #1d1f22;
+  background-color: white;
+  text-align: center;
+  width: 45px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  height: 45px;
+  cursor: pointer;
+  margin-top: 4px;
+  margin-bottom: 15px;
+}
+
+.font {
+  font-size: 30px;
+}
+
+.itemCount {
+  margin-top: 25px;
+  margin-bottom: 15px;
+  font-size: 18px;
+  text-align: center;
+}
+
+.itemDecrease {
+  font-size: 20px;
+  font-weight: 500;
+  border: 1px solid #1d1f22;
+  background-color: white;
+  text-align: center;
+  width: 45px;
+  height: 45px;
+  cursor: pointer;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-top: 15px;
+}
+.p {
+  position: relative;
+}
+.cursor {
+  cursor: pointer;
+}
+.imgContainer {
+  height: 330px;
+  width: 330px;
+}
+.productImage {
+  width: 100%;
+  height: 100%;
+  object-fit: scale-down;
+  max-height: 330px;
 }

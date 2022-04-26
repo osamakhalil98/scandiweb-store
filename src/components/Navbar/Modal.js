@@ -1,4 +1,4 @@
-import React, { Component, createRef } from "react";
+import React, { Component } from "react";
 import { Query } from "react-apollo";
 import styles from "./Navbar.module.scss";
 import { GET_CURRENCIES } from "../../graphql/queries";
@@ -6,37 +6,13 @@ import { connect } from "react-redux";
 import setCurrencyAction from "../../redux/actions/setCurrencyAction";
 
 class Modal extends Component {
-  modalRef = React.createRef();
-  currencyType = (cSymbol) => {
-    switch (cSymbol) {
-      case "$":
-        return <span style={{ marginLeft: "5px" }}>USD</span>;
-      case "¥":
-        return <span style={{ marginLeft: "5px" }}>JPY</span>;
-
-      case "£":
-        return <span style={{ marginLeft: "5px" }}>GBP</span>;
-
-      case "₽":
-        return <span style={{ marginLeft: "5px" }}>RUB</span>;
-
-      case "A$":
-        return <span style={{ marginLeft: "5px" }}>AUD</span>;
-      default:
-        return "";
-    }
-  };
-
-  handleModal() {
-    this.modalRef.current.classList.add(styles.modalClose);
-  }
-
   handleModalClick(c) {
     this.props.setCurrencyAction(c);
-    //closeCurrencyModal();
+    setTimeout(() => {
+      this.props.closed();
+    }, 10);
   }
   render() {
-    console.log(this.props);
     return (
       <>
         <div className={styles.modalCurrencyContainer} ref={this.modalRef}>
@@ -46,15 +22,21 @@ class Modal extends Component {
                 return (
                   <>
                     {data.currencies.map((c, idx) => {
-                      let currencySign = this.currencyType(c.symbol);
                       return (
                         <p
                           key={idx}
-                          className={styles.currencyListItem}
-                          style={{ cursor: "pointer" }}
+                          className={`${styles.currencyListItem} ${
+                            this.props.currentCurrencyState.currentCurrency ===
+                            c.symbol
+                              ? styles.activeListItem
+                              : ""
+                          } ${styles.cursor}`}
                           onClick={() => this.handleModalClick(c.symbol)}
                         >
-                          {c.symbol} {currencySign}
+                          <span className={styles.currencyStyle}>
+                            {" "}
+                            {c.symbol} {c.label}
+                          </span>
                         </p>
                       );
                     })}

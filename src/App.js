@@ -5,7 +5,7 @@ import Products from "./components/Products/Products";
 import Cart from "./components/Cart/Cart";
 import ProductsDetails from "./components/ProductsDetails/ProductsDetails";
 import { ApolloProvider } from "react-apollo";
-import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 class App extends Component {
   render() {

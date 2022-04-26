@@ -2,26 +2,30 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import increaseCurrentItemsAction from "../../redux/actions/increaseCurrentItemsAction";
 import decreaseCurrentItemsAction from "../../redux/actions/decreaseCurrentItemsAction";
+import clearCurrentItemsAction from "../../redux/actions/clearCurrentItemsAction";
 import styles from "./CartModal.module.scss";
-import { toast, Toaster } from "react-hot-toast";
 import { Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 class CartModal extends Component {
   AMOUNT = "";
   TOTAL = 0;
-  itemsTotal = {};
 
-  handleCurrency = (pPrices, count, name) => {
-    pPrices?.map((pPrice) => {
+  itemsTotal = new Array(
+    this.props.currentCartItemsState.cartItems.length
+  ).fill(0);
+
+  handleCurrency = (pPrices, count, idx) => {
+    pPrices?.forEach((pPrice) => {
       if (
         pPrice?.currency?.symbol ===
         this.props.currentCurrencyState.currentCurrency
       ) {
         this.AMOUNT = pPrice.amount;
-        this.itemsTotal[name] = Math.round(this.AMOUNT * (count - 1));
+
+        this.itemsTotal[idx] = Math.round(this.AMOUNT * count);
+
         this.TOTAL = Object.values(this.itemsTotal).reduce((a, b) => a + b);
-      } else {
-        return;
       }
     });
   };
@@ -29,34 +33,36 @@ class CartModal extends Component {
   handleIncrease = (payload) => {
     this.props.increaseCurrentItemsAction(payload);
   };
-  handleDecrease = (payload, count, name) => {
-    if (count == 2) {
-      this.itemsTotal[name] = Math.round(this.AMOUNT * 0);
-      this.TOTAL = Object.values(this.itemsTotal).reduce((a, b) => a + b);
+  handleDecrease = (payload, count, idx) => {
+    if (count === 1) {
+      this.itemsTotal = this.itemsTotal.filter((item, id) => id !== idx);
+      if (this.itemsTotal.length > 0) {
+        this.TOTAL = Object.values(this.itemsTotal).reduce((a, b) => a + b);
+      } else {
+        this.TOTAL = 0;
+      }
     }
     this.props.decreaseCurrentItemsAction(payload);
   };
 
   handleCheckout = () => {
-    if (this.props.currentCartItemsState.cartItems.length == 0) {
-      toast("No items added to your cart!");
+    if (this.props.currentCartItemsState.itemslength === 0) {
+      alert("No items added to your cart!");
     } else {
-      toast("You Order Number is #" + Math.floor(Math.random() * (6 - 1)) + 1, {
-        icon: "🚀",
-      });
+      this.props.history.push("/Cart");
+      this.props.closeModal();
     }
   };
   render() {
-    console.log(this.itemsTotal);
     return (
       <div className={styles.modalContainer}>
         <div className={styles.modalSubContainer}>
-          <p style={{ fontWeight: 500, fontSize: "16px" }}>
-            <span style={{ fontWeight: 700, fontSize: "16px" }}> My Bag</span>,{" "}
-            {this.props.currentCartItemsState.cartItems.length} items
+          <p className={styles.titleBag}>
+            <span className={styles.titleBag2}> My Bag</span>,{" "}
+            {this.props.currentCartItemsState.itemslength} items
           </p>
 
-          {this.props.currentCartItemsState.cartItems.map((item) => {
+          {this.props.currentCartItemsState.cartItems.map((item, idx) => {
             const {
               productImage,
               productBrand,
@@ -83,91 +89,74 @@ class CartModal extends Component {
             this.handleCurrency(
               item.productPrice,
               item.count,
-              item.productName
+
+              idx
             );
 
             return (
               <>
                 <div className={styles.itemContainer}>
-                  <div className={styles.itemInfo} style={{ width: "120px" }}>
+                  <div className={`${styles.itemInfo} ${styles.w}`}>
                     <p>{item.productBrand}</p>
-                    <p style={{ marginTop: "0" }}>{item.productName}</p>
-                    <p
-                      style={{
-                        marginTop: "0",
-                        fontSize: "16px",
-                        fontWeight: 500,
-                      }}
-                    >
+                    <p className={styles.m}>{item.productName}</p>
+                    <p className={styles.itemPrice}>
                       {this.props.currentCurrencyState.currentCurrency}{" "}
-                      {Math.round(this.AMOUNT * (item.count - 1)).toFixed(2)}
+                      {Math.round(this.AMOUNT).toFixed(2)}
                     </p>
-                    <div style={{ display: "flex" }}>
-                      {Object.keys(item.selectedAttr).map((key, index) => (
-                        <p
-                          style={{
-                            backgroundColor: item.selectedAttr[key],
-                            width: 30,
-                            height: 30,
-                            marginInlineEnd: 10,
-                            border: "1px solid black",
-                            paddingTop: 5,
-                            cursor: "pointer",
-                            textAlign: "center",
-                            fontSize: 12,
-                            color: "#FFFFFF",
-                          }}
-                          className={styles.selectedAttr}
-                        >
-                          {key === "Color" ? "" : item.selectedAttr[key]}
-                        </p>
-                      ))}
-                    </div>
+
+                    {item.prodAttrs.length > 0
+                      ? item.prodAttrs.map((key, index) => (
+                          <>
+                            <div className={styles.prodAttrContainer}>
+                              <p className={styles.attrName}>{key.name}:</p>
+                              <div className={styles.attrItemsContainer}>
+                                {key.items.map((it) => {
+                                  return key.name === "Color" ? (
+                                    it.value === item.selectedAttr[key.name] ? (
+                                      <p
+                                        style={{
+                                          backgroundColor: it.value,
+                                        }}
+                                        className={styles.selectedAttrColor}
+                                      ></p>
+                                    ) : (
+                                      <p
+                                        style={{
+                                          backgroundColor: it.value,
+                                        }}
+                                        className={styles.AttrColor}
+                                      ></p>
+                                    )
+                                  ) : it.value ===
+                                    item.selectedAttr[key.name] ? (
+                                    <p className={styles.selectedAttrText}>
+                                      {it.value}
+                                    </p>
+                                  ) : (
+                                    <p className={styles.AttrText}>
+                                      {it.value}
+                                    </p>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          </>
+                        ))
+                      : ""}
                   </div>
 
-                  <div className={styles.itemInfo}>
+                  <div className={`${styles.infoCtrl}`}>
                     <p
-                      style={{
-                        fontSize: "20px",
-                        fontWeight: 500,
-                        border: "1px solid #1D1F22",
-                        backgroundColor: "white",
-                        textAlign: "center",
-                        width: 25,
-                        height: 25,
-                        cursor: "pointer",
-                      }}
+                      className={styles.increaseCtrl}
                       onClick={() => this.handleIncrease(cartItem)}
                     >
                       +
                     </p>
+                    <p className={styles.itemCount}>{item.count}</p>
                     <p
-                      style={{
-                        marginTop: 0,
-                        marginBottom: 0,
-                        fontSize: "18px",
-                        textAlign: "center",
-                      }}
-                    >
-                      {item.count - 1}
-                    </p>
-                    <p
-                      style={{
-                        fontSize: "20px",
-                        fontWeight: 500,
-                        border: "1px solid #1D1F22",
-                        backgroundColor: "white",
-                        textAlign: "center",
-                        width: 25,
-                        height: 25,
-                        cursor: "pointer",
-                      }}
+                      className={styles.itemDecrease}
                       onClick={() =>
-                        this.handleDecrease(
-                          cartItem,
-                          item.count,
-                          item.productName
-                        )
+                        this.handleDecrease(cartItem, item.count, idx)
                       }
                     >
                       -
@@ -177,9 +166,9 @@ class CartModal extends Component {
                   <div className={styles.itemInfo}>
                     <img
                       src={item.productImage}
-                      width={105}
-                      height={137}
-                      style={{ objectFit: "contain" }}
+                      alt="product"
+                      className={styles.productImage}
+                      //style={{ objectFit: "contain" }}
                     />
                   </div>
                   <div className={styles.itemInfo}></div>
@@ -188,34 +177,26 @@ class CartModal extends Component {
             );
           })}
         </div>
-        <div
-          style={{
-            width: "90%",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginLeft: "15px",
-            marginRight: "15px",
-          }}
-        >
-          <p style={{ fontSize: "18px", fontWeight: 700 }}>Total</p>
-          <p style={{ fontSize: "18px", fontWeight: 700 }}>
+        <div className={styles.totalContainer}>
+          <p className={styles.titleBag2}>Total</p>
+          <p className={styles.titleBag2}>
             {this.props.currentCurrencyState.currentCurrency}
             {this.TOTAL.toFixed(2)}
           </p>
         </div>
         <div className={styles.btnContainer}>
           <Link to={"/Cart"}>
-            <button style={{ cursor: "pointer" }} className={styles.bagViewBtn}>
+            <button
+              className={`${styles.bagViewBtn} ${styles.cursor}`}
+              onClick={() => this.props.closeModal()}
+            >
               VIEW BAG
             </button>
           </Link>
           <button
-            style={{ cursor: "pointer" }}
-            className={styles.checkOutBtn}
+            className={`${styles.checkOutBtn} ${styles.cursor}`}
             onClick={() => this.handleCheckout()}
           >
-            <Toaster />
             CHECK OUT
           </button>
         </div>
@@ -233,6 +214,11 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(increaseCurrentItemsAction(payload)),
   decreaseCurrentItemsAction: (payload) =>
     dispatch(decreaseCurrentItemsAction(payload)),
+  clearCurrentItemsAction: (payload) =>
+    dispatch(clearCurrentItemsAction(payload)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(CartModal);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(CartModal));

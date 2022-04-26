@@ -95,11 +95,6 @@ class Cart extends Component {
     return (
       <div className={styles.cartContainer}>
         <h1 className={`${styles.cartHeadline} ${styles.cartName}`}>CART</h1>
-        {this.props.currentCartItemsState.cartItems.length === 0 ? (
-          <h1>No Items added to Cart!</h1>
-        ) : (
-          ""
-        )}
         <div>
           {this.props.currentCartItemsState.cartItems.map((item, idx) => {
             const {
