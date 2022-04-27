@@ -6,6 +6,8 @@ import decreaseCurrentItemsAction from "../../redux/actions/decreaseCurrentItems
 import clearCurrentItemsAction from "../../redux/actions/clearCurrentItemsAction";
 import leftArrow from "../../assets/leftArrow.png";
 import rightArrow from "../../assets/rightArrow.png";
+import uuid from "react-uuid";
+import { BigColorAttrSelected, BigColorAttr } from "../../style/colorAttrStyle";
 
 class Cart extends Component {
   AMOUNT = "";
@@ -126,7 +128,7 @@ class Cart extends Component {
             this.handleCurrency(item.productPrice, item.count, idx);
 
             return (
-              <>
+              <React.Fragment key={uuid()}>
                 <hr className={styles.line} />
                 <div className={styles.itemContainer}>
                   <div
@@ -143,42 +145,46 @@ class Cart extends Component {
                     <div className={`${styles.attrContainer}`}>
                       {item.prodAttrs.length > 0
                         ? item.prodAttrs.map((key, index) => (
-                            <>
+                            <React.Fragment key={uuid()}>
                               <div className={styles.attrCartContainer}>
                                 <p className={styles.attrLabel}>{key.name}:</p>
                                 <div className={styles.attrItemsContainer}>
-                                  {key.items.map((it) => {
+                                  {key.items.map((it, idx) => {
                                     return key.name === "Color" ? (
                                       it.value ===
                                       item.selectedAttr[key.name] ? (
-                                        <p
-                                          style={{
-                                            backgroundColor: it.value,
-                                          }}
-                                          className={styles.selectedAttrColor}
-                                        ></p>
+                                        <React.Fragment key={uuid()}>
+                                          <BigColorAttrSelected
+                                            bgColor={it.value}
+                                            cursor={"auto"}
+                                          />
+                                        </React.Fragment>
                                       ) : (
-                                        <p
-                                          style={{
-                                            backgroundColor: it.value,
-                                          }}
-                                          className={styles.AttrColor}
-                                        ></p>
+                                        <React.Fragment key={uuid()}>
+                                          <BigColorAttr
+                                            bgColor={it.value}
+                                            cursor={"auto"}
+                                          />
+                                        </React.Fragment>
                                       )
                                     ) : it.value ===
                                       item.selectedAttr[key.name] ? (
-                                      <p className={styles.selectedAttrText}>
-                                        {it.value}
-                                      </p>
+                                      <React.Fragment key={uuid()}>
+                                        <p className={styles.selectedAttrText}>
+                                          {it.value}
+                                        </p>
+                                      </React.Fragment>
                                     ) : (
-                                      <p className={styles.AttrText}>
-                                        {it.value}
-                                      </p>
+                                      <React.Fragment key={uuid()}>
+                                        <p className={styles.AttrText}>
+                                          {it.value}
+                                        </p>
+                                      </React.Fragment>
                                     );
                                   })}
                                 </div>
                               </div>
-                            </>
+                            </React.Fragment>
                           ))
                         : ""}
                     </div>
@@ -248,7 +254,7 @@ class Cart extends Component {
                   </div>
                   <div className={styles.itemInfo}></div>
                 </div>
-              </>
+              </React.Fragment>
             );
           })}
           {this.props.currentCartItemsState.cartItems.length > 0 ? (

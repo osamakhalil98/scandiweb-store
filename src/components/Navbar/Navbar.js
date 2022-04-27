@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import setCategoryAction from "../../redux/actions/setCategoryAction";
 import CartModal from "./CartModal";
+import uuid from "react-uuid";
 
 class Navbar extends Component {
   constructor(props) {
@@ -125,9 +126,9 @@ class Navbar extends Component {
               {({ data }) => {
                 if (data) {
                   return (
-                    <>
+                    <React.Fragment>
                       {data.categories.map((category, idx) => (
-                        <Link to={"/"} className={styles.td}>
+                        <Link to={"/"} className={styles.td} key={idx}>
                           <p
                             key={idx}
                             ref={(ref) => (this.accordingItems[idx] = ref)}
@@ -143,7 +144,7 @@ class Navbar extends Component {
                           </p>
                         </Link>
                       ))}
-                    </>
+                    </React.Fragment>
                   );
                 } else {
                   return null;

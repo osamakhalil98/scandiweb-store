@@ -3,6 +3,8 @@ import styles from "./ProductsDetails.module.scss";
 import { GET_PRODUCT } from "../../graphql/queries";
 import { connect } from "react-redux";
 import setCartItemsAction from "../../redux/actions/setCartItemsAction";
+import uuid from "react-uuid";
+import { BigColorAttr, BigColorAttrSelected } from "../../style/colorAttrStyle";
 
 class ProductsDetails extends Component {
   constructor(props) {
@@ -118,6 +120,7 @@ class ProductsDetails extends Component {
                   src={`${prod}`}
                   alt="product details"
                   className={styles.imgStyles}
+                  key={idx}
                   onClick={() => this.handleGallerySelect(prod)}
                 />
               );
@@ -137,7 +140,6 @@ class ProductsDetails extends Component {
                 styles.bigImage
               }`}
               height={480}
-              //style={{ objectFit: "contain" }}
             />
           </div>
 
@@ -149,33 +151,41 @@ class ProductsDetails extends Component {
               {product?.attributes?.map((product, idx) => {
                 if (product?.type === "swatch") {
                   return (
-                    <>
+                    <React.Fragment key={uuid()}>
                       <h3 className={styles.attrName}>{product?.name}:</h3>
                       <div className={styles.flex}>
-                        {product?.items?.map((color, idx) => (
-                          <p
-                            style={{
-                              backgroundColor: color.value,
-                            }}
-                            className={`${
-                              this.state.selectedAttributes[product?.name] ===
-                              color.value
-                                ? styles.selectedColor
-                                : ""
-                            } ${styles.attrStyles}`}
-                            data-item={idx}
-                            ref={(ref) => this.clickedItems.push(ref)}
-                            onClick={() =>
-                              this.handleAttrClick(product?.name, color.value)
-                            }
-                          ></p>
-                        ))}
+                        {product?.items?.map((color, idx) =>
+                          this.state.selectedAttributes[product?.name] ===
+                          color.value ? (
+                            <BigColorAttrSelected
+                              bgColor={color.value}
+                              cursor={"pointer"}
+                              data-item={idx}
+                              key={uuid()}
+                              ref={(ref) => this.clickedItems.push(ref)}
+                              onClick={() =>
+                                this.handleAttrClick(product?.name, color.value)
+                              }
+                            />
+                          ) : (
+                            <BigColorAttr
+                              bgColor={color.value}
+                              cursor={"pointer"}
+                              data-item={idx}
+                              key={uuid()}
+                              ref={(ref) => this.clickedItems.push(ref)}
+                              onClick={() =>
+                                this.handleAttrClick(product?.name, color.value)
+                              }
+                            />
+                          )
+                        )}
                       </div>
-                    </>
+                    </React.Fragment>
                   );
                 } else {
                   return (
-                    <>
+                    <React.Fragment key={uuid()}>
                       <h3 className={styles.attrName}>{product?.name}:</h3>
                       <div className={styles.selectedAttrcontainer}>
                         {product?.items?.map((value, idx) => (
@@ -187,6 +197,7 @@ class ProductsDetails extends Component {
                                 : styles.notSelectedAttr
                             } ${styles.attr}`}
                             data-item={idx}
+                            key={uuid()}
                             ref={(ref) => this.clickedItems.push(ref)}
                             onClick={() =>
                               this.handleAttrClick(product?.name, value.value)
@@ -196,7 +207,7 @@ class ProductsDetails extends Component {
                           </button>
                         ))}
                       </div>
-                    </>
+                    </React.Fragment>
                   );
                 }
               })}
@@ -208,7 +219,7 @@ class ProductsDetails extends Component {
                 {product?.prices?.map((price) =>
                   price?.currency?.symbol ===
                   this.props.currentCurrencyState.currentCurrency ? (
-                    <span>{price?.amount}</span>
+                    <span key={uuid()}>{price?.amount}</span>
                   ) : (
                     ""
                   )

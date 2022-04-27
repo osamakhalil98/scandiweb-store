@@ -16,13 +16,7 @@ class App extends Component {
             <Navbar />
             <Switch>
               <Route exact path="/" component={Products} />
-              <Route
-                path="/PDP/:productid"
-                render={({ match }) => (
-                  <ProductsDetails id={match.params.productid} />
-                )}
-                component={ProductsDetails}
-              />
+              <Route path="/PDP/:productid" component={ProductsDetails} />
               <Route path="/Cart" component={Cart} />
             </Switch>
           </ApolloProvider>

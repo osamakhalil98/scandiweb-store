@@ -73,7 +73,6 @@ class Card extends Component {
                 className={`${styles.productImage} `}
                 src={this.props.productImage}
                 alt="product"
-                // style={{ objectFit: "contain" }}
               />
             </Link>
             <button

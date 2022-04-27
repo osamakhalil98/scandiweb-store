@@ -6,6 +6,11 @@ import clearCurrentItemsAction from "../../redux/actions/clearCurrentItemsAction
 import styles from "./CartModal.module.scss";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
+import uuid from "react-uuid";
+import {
+  SmallColorAttr,
+  SmallColorAttrSelected,
+} from "../../style/colorAttrStyle";
 
 class CartModal extends Component {
   AMOUNT = "";
@@ -94,7 +99,7 @@ class CartModal extends Component {
             );
 
             return (
-              <>
+              <React.Fragment key={uuid()}>
                 <div className={styles.itemContainer}>
                   <div className={`${styles.itemInfo} ${styles.w}`}>
                     <p>{item.productBrand}</p>
@@ -106,41 +111,40 @@ class CartModal extends Component {
 
                     {item.prodAttrs.length > 0
                       ? item.prodAttrs.map((key, index) => (
-                          <>
+                          <React.Fragment key={uuid()}>
                             <div className={styles.prodAttrContainer}>
                               <p className={styles.attrName}>{key.name}:</p>
                               <div className={styles.attrItemsContainer}>
                                 {key.items.map((it) => {
                                   return key.name === "Color" ? (
                                     it.value === item.selectedAttr[key.name] ? (
-                                      <p
-                                        style={{
-                                          backgroundColor: it.value,
-                                        }}
-                                        className={styles.selectedAttrColor}
-                                      ></p>
+                                      <SmallColorAttrSelected
+                                        bgColor={it.value}
+                                        key={uuid()}
+                                      />
                                     ) : (
-                                      <p
-                                        style={{
-                                          backgroundColor: it.value,
-                                        }}
-                                        className={styles.AttrColor}
-                                      ></p>
+                                      <SmallColorAttr
+                                        bgColor={it.value}
+                                        key={uuid()}
+                                      />
                                     )
                                   ) : it.value ===
                                     item.selectedAttr[key.name] ? (
-                                    <p className={styles.selectedAttrText}>
+                                    <p
+                                      className={styles.selectedAttrText}
+                                      key={uuid()}
+                                    >
                                       {it.value}
                                     </p>
                                   ) : (
-                                    <p className={styles.AttrText}>
+                                    <p className={styles.AttrText} key={uuid()}>
                                       {it.value}
                                     </p>
                                   );
                                 })}
                               </div>
                             </div>
-                          </>
+                          </React.Fragment>
                         ))
                       : ""}
                   </div>
@@ -168,12 +172,11 @@ class CartModal extends Component {
                       src={item.productImage}
                       alt="product"
                       className={styles.productImage}
-                      //style={{ objectFit: "contain" }}
                     />
                   </div>
                   <div className={styles.itemInfo}></div>
                 </div>
-              </>
+              </React.Fragment>
             );
           })}
         </div>

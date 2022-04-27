@@ -3,6 +3,7 @@ import { GET_PRODUCTS } from "../../graphql/queries";
 import Card from "./Card";
 import styles from "./Products.module.scss";
 import { connect } from "react-redux";
+import uuid from "react-uuid";
 
 class Grid extends Component {
   state = {
@@ -55,7 +56,7 @@ class Grid extends Component {
   render() {
     const { allProducts } = this.state;
     return (
-      <>
+      <React.Fragment key={uuid()}>
         <div className={styles.ProductsContainer}>
           <h4 className={styles.categoryName}>
             {allProducts?.data?.category?.name}
@@ -64,7 +65,7 @@ class Grid extends Component {
             {allProducts?.data?.category?.products?.map((product, idx) => {
               this.handleCurrency(product?.prices);
               return (
-                <>
+                <React.Fragment key={uuid()}>
                   <Card
                     productImage={product?.gallery[0]}
                     gallery={product?.gallery}
@@ -76,12 +77,12 @@ class Grid extends Component {
                     stock={product.inStock}
                     key={idx}
                   />
-                </>
+                </React.Fragment>
               );
             })}
           </div>
         </div>
-      </>
+      </React.Fragment>
     );
   }
 }
