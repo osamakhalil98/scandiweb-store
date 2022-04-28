@@ -11,7 +11,6 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import setCategoryAction from "../../redux/actions/setCategoryAction";
 import CartModal from "./CartModal";
-import uuid from "react-uuid";
 
 class Navbar extends Component {
   constructor(props) {
